@@ -37,8 +37,8 @@ $$\forall_{v\not= root} {el(v) \geq el(ojciec(v))}$$
 Oznacza to tyle, że dowolny wierzchołek v, który nie jest korzeniem ma większą wartość od swojego ojca (na zdjęciu powyżej jest kopiec typu max czyli odwrotny).
 
 Operacje na naszym kopcu
-1. $O(1)$ **min** : zwracamy korzeń czyli H[1]
-2. $O(\lg(n))$ **insert**: Dodajemy element jako kolejny liść stosujemy przesuń-wyżej, aż nie będzie żadnych zaburzeń. Po zamianie zaburzenie nie wystąpi na synie, ponieważ wcześniej była zachowana zależność - porządek kopcowy.
-3. $O(\lg(n))$ **delete min**: Usuwamy korzeń, który jest minimum i wkładamy tam wartość z ostatniego liścia (do ulepszenia!). Następnie przesuwamy-niżej (wyżej dajemy mniejszą wartość bo inaczej powstanie zaburzenie! - ojciec większy od syna!)
+1. $\Omicron(1)$ **min** : zwracamy korzeń czyli H[1]
+2. $\Omicron(\lg(n))$ **insert**: Dodajemy element jako kolejny liść stosujemy przesuń-wyżej, aż nie będzie żadnych zaburzeń. Po zamianie zaburzenie nie wystąpi na synie, ponieważ wcześniej była zachowana zależność - porządek kopcowy.
+3. $\Omicron(\lg(n))$ **delete min**: Usuwamy korzeń, który jest minimum i wkładamy tam wartość z ostatniego liścia (do ulepszenia!). Następnie przesuwamy-niżej (wyżej dajemy mniejszą wartość bo inaczej powstanie zaburzenie! - ojciec większy od syna!)
 
-Wysokość węzła w kopcu to liczba krawędzi na najdłuższej ścieżce prostej prowadzącej od tego węzła do liścia, a wysokość kopca to wysokość jego korzenia. Ponieważ kopiec mający n elementów ma kształt pełnego drzewa binarnego, jego wysokość to $\Theta(\lg(n))$. Podstawowe operacje na kopcach działają w czasie proporcjonalnym do co najwyżej wysokości drzewa, czyli $O(n)$.
+Wysokość węzła w kopcu to liczba krawędzi na najdłuższej ścieżce prostej prowadzącej od tego węzła do liścia, a wysokość kopca to wysokość jego korzenia. Ponieważ kopiec mający n elementów ma kształt pełnego drzewa binarnego, jego wysokość to $\Theta(\lg(n))$. Podstawowe operacje na kopcach działają w czasie proporcjonalnym do co najwyżej wysokości drzewa, czyli $\Omicron(n)$.
