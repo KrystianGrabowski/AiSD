@@ -1,3 +1,15 @@
+- [Fibonacci mod c](#fibonacci-mod-c)
+  - [Rekurencyjnie](#rekurencyjnie)
+  - [Iteracyjnie](#iteracyjnie)
+  - [Macierzowo](#macierzowo)
+- [\end{bmatrix}](#endbmatrix)
+- [\end{bmatrix}](#endbmatrix-1)
+- [Rzędy wielkości](#rz%c4%99dy-wielko%c5%9bci)
+  - [Notacja $\Theta$](#notacja-mathsemanticsmrowmi-mathvariant%22normal%22%ce%98mimrowannotation-encoding%22applicationx-tex%22thetaannotationsemanticsmath%ce%98)
+  - [Notacja O](#notacja-o)
+  - [Notacja $\Omega$](#notacja-mathsemanticsmrowmi-mathvariant%22normal%22%ce%a9mimrowannotation-encoding%22applicationx-tex%22omegaannotationsemanticsmath%ce%a9)
+- [Sortowanie](#sortowanie)
+  - [Merge sort](#merge-sort)
 - [Kopce](#kopce)
   - [Kopce opis](#kopce-opis)
   - [Procedury dla kopca](#procedury-dla-kopca)
@@ -7,6 +19,127 @@
     - [Priority queue](#priority-queue)
     - [Double-ended priority queue](#double-ended-priority-queue)
 
+
+# Fibonacci mod c
+
+## Rekurencyjnie
+```python
+def fibRec(n, c):
+    if n == 0:
+        return 0
+    if n <= 1:
+        return 1
+    return (fibRec(n-1, c) + fibRec(n-2, c)) % c
+```
+
+## Iteracyjnie
+```python
+def fibIter(n, c):
+    f0 = 0
+    f1 = 1
+    for i in range (2, n+1):
+        x = f0
+        f0 = f1
+        f1 = (x + f0) % c
+    return f1
+```
+
+## Macierzowo
+$$\begin{bmatrix}
+    0 & 1\\
+    1 & 1
+\end{bmatrix}
+\times
+\begin{bmatrix}
+    f_{i}\\
+    f_{i+1}
+\end{bmatrix}
+=
+\begin{bmatrix}
+    f_{i+1}\\
+    f_{i+2}
+\end{bmatrix}
+$$
+Stąd
+$$\begin{bmatrix}
+    0 & 1\\
+    1 & 1
+\end{bmatrix}^{n-1}
+\times
+\begin{bmatrix}
+    f_{0}\\
+    f_{1}
+\end{bmatrix}
+=
+\begin{bmatrix}
+    f_{n-1}\\
+    f_{n}
+\end{bmatrix}
+$$
+Podnosimy więc macierz do potęgi modulo c. Możey to zrobić za pomocą szybkiego potęgowania
+$$x^n = \begin{cases}
+    (x^2)^{n/2} & even(n)\\
+    x(x^2)^{(n-1)/2} & odd(n)
+\end{cases}$$ 
+
+# Rzędy wielkości
+Interesuje nas jak szybko wzrasta czas działania algorytmu, gdy rozmiar danych dążdy do nieskończoności.
+
+## Notacja $\Theta$
+$$\Theta(g(n)) = \{f(n):\exist c1, c2, n0 : 0 \leq c_1g(n) \leq f(n) \leq c_2g(n)\ \forall n\geq n_0\}$$
+
+Muszą istnieć takie dodatnie stałe $c_1$ i $c_2$, że funkcja może być wstawiona "pomiędzy" $c_1g(n)$ i $c_2g(n)$, dla dostatecznie dużych $n$. $\Theta$ jest zbiorem więc możemy zapisać $f(n) \in \Theta(g(n))$. Mówimy, że $g(n)$ jest asymptotycznie dokładnym oszacowaniem dla $f(n)$. Notacja $\Theta$ asymptotycznie ogranicza funkcję od góry oraz od dołu. Kiedy mamy asymptotyczne ograniczenie górne, używamy notacji O.
+
+## Notacja O
+Dla danej funkcji g(n) przez O(g(n)) oznaczamy zbiór funkcji:
+$$O(g(n)) = \{f(n):\exist c, n0 : 0 \leq f(n) \leq cg(n)\ \forall n\geq n_0\}$$
+Z notacji $O$ korzystamy, gdy chcemy oszacować funkcję z góry, z dokładnością do stałego czynnika. Dla wszystkich wartości $n$ większych od $n_0$ wartość funkcji $f(n)$ jest nie większa niż $c\times g(n)$.
+Możemy zauważyć, że zachodzi zależność:
+$$f(n) = \Theta(g(n)) \implies f(n) = O(g(n))$$
+ponieważ notacja $\Theta$ jest silniejsza niż notacja $O$, czyli
+$$\Theta(g(n)) \subset O(g(n))$$
+
+## Notacja $\Omega$
+Notacja ta określa asymptotyczne ograniczenie dolne. Dla danej funkcji $g(n)$ przez $\Omega(g(n))$ oznaczamy
+$$\Omega(g(n)) = \{f(n):\exist c, n0 : 0 \leq cg(n) \leq f(n)\ \forall n\geq n_0\}$$
+Dla wszystkich wartości $n$ większych od $n_0$, wartość funkcji $f(n)$ jest nie mniejsza niż $c\times g(n)$.
+
+Twierdzenie:
+Dla każdych funkcji $f(n)$ i $g(n)$ zachodzi $f(n) = \Theta(g(n))$ wtw., gdy $f(n) = O(g(n))$ oraz $f(n) = \Omega(g(n))$
+
+# Sortowanie
+
+## Merge sort
+Przykład algorytmu dziel i zwyciężaj. Podstawową operacją algorytmu jest scalanie dwóch posortowanych ciągów dokonane w kroku "połącz". Działa ono w czasie $\Theta(n)$.
+
+![MergeSortGif](https://upload.wikimedia.org/wikipedia/commons/c/cc/Merge-sort-example-300px.gif)
+
+Ważnym aspektem implementacji algorytów dziel i zwyciężaj jest staranne dobranie progu na rozmiar danych, poniżej którego nie opłaca się stosować algorytmu rekurencyjnego. Przykładowo poniżej stosujemy insert sort dla małych danych. Może on wymagać czasu $O(n^2)$, ale jest on bardzo prosty i łatwy w implementacji, a w praktyce szybszy dla małych danych od scalania rekurencyjnego. Próg ustalamy za pomocą eksperymentów.
+
+```pascal
+procedure mergesort(T[1..n)])
+    if n jest małe then insert(T)
+    else
+        X[1..ceil(n/2)] <-T[1..ceil(n/2)]
+        Y[1..floor(n/2)] <- T[1+ceil(n/2)..n]
+        mergesort(X)
+        mergesort(Y)
+        T <- merge(X, Y)
+```
+
+Czas działania tego algorytmu wyraża się równaniem 
+$$T(n) = T(\frac{n}{2}) + T(\frac{n}{2}) + \Theta(n)$$
+$T(\frac{n}{2})$ - podział problemu na dwa podproblemy (rekurencja)\
+$\Theta(n)$ - czas scalania
+
+Z twierdzenia o rekursji uniwersalnej czas działania takiego algorytmu to $t(n)=\Theta(n\lg(n))$. Mankamentem tego algorytmu jest fakt wykorzystania dodatkowych tablic (poza wejściową) podczas scalania ciągów (np. swap zaburzy porządek ciągów). Niestety nie jest znany sposób usunięcia tej wady. Co prawda znane są metody scalania w miejscu w czasie liniowym, lecz są one bardzo skomplikowane, co sprawia, że stałe w funkcjach liniowych ograniczających czas działania są nieakceptowalnie wielkie.
+
+Poprawność scalania
+Na początku każdej iteracji pętli for obejmującej podtablica $A[p..k-1]$ zawiera $k-p$ najmniejszych elementów tablic $L[1..n_1+1]$ oraz $L[1..n_2+1]$ w kolejności posortowanej. Co więcej L[i] oraz R[j] są najmniejszymi elementami swoich tablic, które nie zostały skopiowane spowrotem do A.
+
+**Inicjowanie** - Przed pierwszą pętlą mamy $k == p$, więc podtablica $A[p..k-1]$ jest pusta. Ta pusta tablica zawiera $k - p = 0$ najmnijeszych elementów tablic L i R, a ponieważ i = j = 1, zatem L[i] i R[j] są najmniejszymi elementami swoich tablic, które nie zostały skopiowane do A. \
+**Utrzymanie** - Aby przekonać się, że każda iteracja zachowuje niezmiennik, załóżmy, że $L[i] \leq R[j]$. Wówczas L[i] jest najmniejszym elementem nie skopiowanym do A. Ponieważ $A[p..k-1]$ zawiera $k-p$ najmniejszych elementów, zatem po skopiowaniu elementu $L[i]$ do $A[k]$ podtablica $A[p..k]$ będzie zawierać $k - p + 1$ najmniejszych elementów. Zwiększenie k, czyli uaktualnienie zmiennej sterującej pętli oraz i powoduje odtworzenie niezmiennika pętli przed następną iteracją. Jeśli natomiast $L[i] > R[j]$ to działamy symterycznie.\
+**Zakończenie** - Na końcu mamy $k = r + 1$. Na mocy niezmiennika pętli podtablica $A[p..k-1]$, czyli $A[p..r]$, zawiera $k-p = r - p +1$ najmniejszych elementów tablic L i R w kolejności posortowanej. Tablice R i L zawierają łącznie $n_1 + n_2 + 2 = r - p + 3$. Wszystkie elementy oprócz wartoników zostały skopiowane.    
 
 # Kopce
 
