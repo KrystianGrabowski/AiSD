@@ -62,14 +62,24 @@ int main() {
             while (pointer > -1 && visited_points[pointer].a > level_points[i].a) {
                 pointer--;
             }
-            level_points[i].value = visited_points[pointer].value + level_points[i].c;
+            if (i != 0) {
+                if (visited_points[pointer].value > level_points[i-1].value) {
+                    level_points[i].value = visited_points[pointer].value + level_points[i].c;
+                }
+                else {
+                    level_points[i].value = level_points[i-1].value + level_points[i].c;
+                }
+            }
+            else {
+                level_points[i].value = visited_points[pointer].value + level_points[i].c;
+            }  
         }
 
         visited_points.insert( visited_points.end(), level_points.begin(), level_points.end() );
         std::sort(visited_points.begin(), visited_points.end(), compare_points_by_x_y);
         printf("_-----------------_\n");
         for (int i=0; i<(int)visited_points.size(); i++) {
-            printf("%d %d %ld\n", visited_points[i].a, visited_points[i].b, visited_points[i].value);
+            printf("%d %d %ld %d\n", visited_points[i].a, visited_points[i].b, visited_points[i].value, visited_points[i].prev);
         }
         level_points.clear();
         int fd;
