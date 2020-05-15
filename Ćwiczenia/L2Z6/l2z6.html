@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Lista 2 zadanie 6</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+        <link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        
+        <script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+    </head>
+    <body class="vscode-light">
+        <h1 id="lista-2-zadanie-6">Lista 2 zadanie 6</h1>
+<h2 id="krystian-grabowski">Krystian Grabowski</h2>
+<p><strong>Treść</strong>: Ułóż algorytm, który dla danego spójnego grafu G oraz krawędzi e sprawdza w czasie <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>m</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n+m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">m</span><span class="mclose">)</span></span></span></span> czy krawędź e należy do jakiegoś minimalnego drzewa spinającego grafu G. Możesz założyć, że wszystkie wagi krawędzi są różne.</p>
+<p>Aby stworzyć algorytm, posłużę się własnością cyklu znaną z Matematyki dyskretnej. Jeśli w jakimkolwiek cyklu istniejącym w grafie G jakaś krawędz k jest krawędzią o maksymalnej wadze na tym cyklu, to k nie należy do żadnego MST. Analogicznie formułujemy zależność na potrzeby zadania.</p>
+<p><strong>Cycle property</strong> <br>
+Jeśli e nie jest maksymalną wagowo krawędzią na żadnym cyklu występującym w G, to e należy do jakiegoś minimalnego drzewa spinającego.</p>
+<p><strong>D-d Cycle property</strong> <br>
+Załóżmy, że e nie jest maksymalną wagowo krawędzią na żadnym cyklu występującym w G, a mimo to nie należy do żadnego minimalnego drzewa spinającego. Wtedy mamy dwa przypadki:</p>
+<ol>
+<li>
+<p>e nie należy do żadnego cyklu z G.</p>
+<p>Skoro więc e nie leży na żadnym cyklu, to wiemy, że od pierwszego wierzchołka który łączy do drugiego nie istnieje inna droga niż przez e. Stąd e musi należeć do MST, ponieważ bez niej graf nie byłby spójny.</p>
+</li>
+<li>
+<p>e należy do jakiegoś cyklu z G</p>
+<p>Weźmy więc powstałe MST i dołóżmy do niego naszą krawędź e. Powstał w ten sposób cykl. Należy teraz zauważyć, że na żadnym cyklu z G e nie było maksymalną wagowo krawędzią. Istnieje więc jakieś e', które ma większą wagę niż e w tym cyklu. Jeśli usuniemy e' to otrzymamy MST o mniejszej wadze, co przeczy temu, że powstałe drzewo było MST.</p>
+</li>
+</ol>
+<p>Więc e musi należeć do MST w każdym przypadku. Znając tą własność możemy w prosty sposób stworzyć algorytm sprawdzający czy e należy do jakiegoś minimalnego drzewa spinającego. Wystarczy sprawdzić czy e jest maksymalną krawędzią na jakimś cyklu w G. Jeśli nie jest, to znaczy, że będzie należeć do jakiegoś MST.</p>
+<p><strong>Algorytm</strong><br>
+Na wejściu dostaniemy jakąś reprezentację grafu oraz naszą krawędź e. Zapamiętujemy więc wagę naszej krawędzi, nazwijmy tę wagę <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span></span></span></span>, oraz dwa wierzchołki, które łączyła <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>v</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">v1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord">1</span></span></span></span> i <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>v</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">v2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord">2</span></span></span></span>. Usuwamy krawędź z grafu, a następnie ustalając jako wierzchołek startowy <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>v</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">v1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord">1</span></span></span></span>, rozpoczynamy przeszukiwanie grafu za pomocą zmodyfikowanego algorytmu BFS. Przechodzimy po krawędzi jedynie wtedy, gdy jej waga jest mniejsza od <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02691em;">w</span></span></span></span>. Jeśli waga jest większa, to ignorujemy krawędź. Jeśli algorytm zakończy działanie nie odwiedzając <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>v</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">v2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord">2</span></span></span></span>, zwracamy &quot;TAK&quot;. Jeśli natomiast natknie się na <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>v</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">v2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord">2</span></span></span></span>, zwracamy &quot;NIE&quot;.</p>
+<p><strong>Uzasadnienie działania algorytmu</strong><br>
+W przypadku gdy nie dotarliśmy do v2, mamy dwa przypadki.</p>
+<ol>
+<li>Usunięcie e rozspójniło graf. Wtedy nasze e musiało należeć do MST, ponieważ pomiędzy wierzchołkami które łączy nie istnieje w grafie żadna inna ścieżka.</li>
+<li>e nie była maksymalna na żadnym cyklu z G. Na każdym takim cyklu zostaliśmy zatrzymani przez krawędź o większej wadze niż e.</li>
+</ol>
+<p>W przypadku gdy dotarliśmy do <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>v</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">v2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord">2</span></span></span></span></p>
+<ol>
+<li>Istniał co najmniej 1 cykl, w którym e był krawędzią z maksymalną wagą spośród krawędzi tego cyklu. Z cycle property wiemy, że w takim przypadku e nie może należeć do żadnego MST.</li>
+</ol>
+<p><strong>Pseudokod</strong><br>
+E-zbiór krawędzi z G<br>
+V-zbiór wierzchołków z G<br>
+Dla każdej krawędzi k k.start i k.end to wierzchołki, które łączy k, a k.weight to jej waga.</p>
+<pre><code class="language-python"><div>    E.remove(e)
+    queue = []
+    visited = [] <span class="hljs-comment">#musimy ustawić domyślnie False</span>
+    queue.push(e.start)
+    <span class="hljs-keyword">while</span>(queue <span class="hljs-keyword">not</span> empty):
+        v = queue.pop()
+        <span class="hljs-keyword">for</span> all edges u - (v, g):
+            <span class="hljs-keyword">if</span> (u.weight &lt; e.weight):
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> visited[g]:
+                    queue.push(k)
+                    visited[g] = <span class="hljs-literal">True</span>
+                <span class="hljs-keyword">if</span> (g == v2):
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</div></code></pre>
+<p><strong>Złożoność</strong><br>
+Czasowa: <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mi>m</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n+m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault">m</span><span class="mclose">)</span></span></span></span> <br>
+Pamięciowa: <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span></p>
+<p>Złożoność czasowa to złożoność zmodyfikowanego algorytmu BFS, który w najgorszym przypadku zachowa się jak zwykły BFS, który działa w czasie liczba krawędzi + liczba wierzchołków. Każdy wierzchołek oraz krawędź zostaną odwiedzone co najwyżej tylko jeden raz. Możemy w różny sposób trzymać informacje o odwiedzeniu. Jeśli ponumerujemy wierzchołki jednym z rozwiązań możne być użycie zwykłej tablicy i sprawdzanie <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>v</mi><mi>i</mi><mi>s</mi><mi>i</mi><mi>t</mi><mi>e</mi><mi>d</mi><mo stretchy="false">[</mo><mi>g</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">visited[g]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mord mathdefault">i</span><span class="mord mathdefault">s</span><span class="mord mathdefault">i</span><span class="mord mathdefault">t</span><span class="mord mathdefault">e</span><span class="mord mathdefault">d</span><span class="mopen">[</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mclose">]</span></span></span></span>.</p>
+<p>Złożoność pamięciowa zależy jedynie od kolejki oraz zbioru informacji czy dany wierzchołek został odwiedzony. W obu przypadkach pamiętamy maksymalnie tyle informacji, ile jest wierzchołków w grafie.</p>
+
+    </body>
+    </html>
