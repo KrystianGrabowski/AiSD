@@ -2,7 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
-#include <list>
+#include <map>
 
 struct point {
     int id;
@@ -23,6 +23,20 @@ bool compare_points_by_x_y(const point &p0, const point &p1) {
 
 int main() {
     int n, m, k;
+    std::map<int, point> demo;
+
+    point point4;
+    point4.a = 1;
+    point4.b = 1;
+    point4.c = 0;
+    point4.id = -1;
+    point4.prev = -1;
+    point4.value = 0;
+
+    demo.insert(std::pair<int, point>(1, point4 ));
+    auto iet = demo.lower_bound(3);  
+    if (iet != demo.begin()) iet--;
+    printf("ITER %d\n", iet->second.id);
     std::vector<point> res_points;
     std::vector<point> points;
     std::vector<point> level_points;
