@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
+#include <list>
 
 struct point {
     int a;
@@ -11,18 +12,19 @@ struct point {
     long value;
 };
 
-bool compare_points_by_x_y(const point &p0, const point &p1) {
+bool compare_points_by_y_x(const point &p0, const point &p1) {
     return p0.b < p1.b || (p0.b == p1.b && p0.a < p1.a);
 }
 
-bool compare_points_by_y_x(const point &p0, const point &p1) {
-    return p0.a < p1.a || (p0.a == p1.a && p0.b < p1.b);
+bool compare_points_by_x_y(const point &p0, const point &p1) {
+    return p0.b < p1.b || (p0.b == p1.b && p0.a < p1.a);
 }
 
 int main() {
     int n, m, k;
     std::vector<point> points;
-    std::vector<point> res_points;
+    std::vector<point> level_points;
+    std::vector<point> visited_points;
 
     // Read data
     if (!scanf("%d %d", &n, &m)) { return 0; }
@@ -35,34 +37,46 @@ int main() {
         points.push_back(point0);
     }
 
-    std::sort(points.begin(), points.end(), compare_points_by_x_y);
-    std::vector<point> points_y(points);
     std::sort(points.begin(), points.end(), compare_points_by_y_x);
-   
-   for (int i=0; i<k; i++) {
-       printf("%d %d %d | %d %d %d\n", points[i].a, points[i].b, points[i].c, points_y[i].a, points_y[i].b, points_y[i].c);
-   }
+    point point_start;
+    point_start.a = 0;
+    point_start.b = 0;
+    point_start.c = 0;
+    point_start.prev = -1;
+    point_start.value = 0; 
+    visited_points.push_back(point_start);
 
-    // for (int i=0; i<k; i++) {
-    //     for (int j=0; j<k; j++) {
-    //         if (i == j) {continue;}
-    //         if (points[j].a >= points[i].a && points[j].b >= points[i].b) {
-    //             if (points[i].value + points[j].c > points[j].value) {
-    //                 points[j].value = points[i].value + points[j].c;
-    //                 points[j].prev = i;
-    //             }
-    //         }
-    //     }
-    // }
+    int current_y;
+    int iter = 0;
+    
+    while (iter < k) {
+        current_y = points[iter].b;
+        while (current_y == points[iter].b && iter < k) {
+            level_points.push_back(points[iter++]);
+        }
+        
 
-    // long max = 0;
-    // int max_id = 0;
-    // for (int i=0; i<k; i++) {
-    //     if (points[i].value > max) {
-    //         max_id = i;
-    //         max = points[i].value;
-    //     }
-    // }
+        for (int i=0; i<(int)level_points.size(); i++) {
+            int pointer = (int)visited_points.size() - 1;
+            //Binsearch ToDo
+            while (pointer > -1 && visited_points[pointer].a > level_points[i].a) {
+                pointer--;
+            }
+            level_points[i].value = visited_points[pointer].value + level_points[i].c;
+        }
+
+        visited_points.insert( visited_points.end(), level_points.begin(), level_points.end() );
+        std::sort(visited_points.begin(), visited_points.end(), compare_points_by_x_y);
+        printf("_-----------------_\n");
+        for (int i=0; i<(int)visited_points.size(); i++) {
+            printf("%d %d %ld\n", visited_points[i].a, visited_points[i].b, visited_points[i].value);
+        }
+        level_points.clear();
+        int fd;
+        scanf("%d", &fd);
+    }
+
+
 
     // int iter = max_id;
     // while(iter != -1) {
