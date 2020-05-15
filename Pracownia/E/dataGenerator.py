@@ -4,12 +4,21 @@ from random import randint
 # parser.add_argument("square", help="display a square of a given number",
 #                     type=int)
 # args = parser.parse_args()
-number = 200
-upperBound = 10000
-element = randint(1, number)
+n = 10
+m = 10
+k = 10
+upperBound = 10
 
-# print("%s" % args.square);
-print("%s %s" % (number, element))
-for j in range(1, number+1):
-    print(f"{randint(0, upperBound)}")
+print(f"{m} {n}")
+print(f"{k}")
+arr = []
+for j in range(1, k+1):
+    k = (randint(1, upperBound), randint(1, upperBound))
+    if k in arr:
+        while k in arr:
+            k = (randint(1, upperBound), randint(1, upperBound))
+    arr.append(k)
+
+for j in arr:
+    print(f"{j[0]} {j[1]} {randint(1, upperBound)}")
 
