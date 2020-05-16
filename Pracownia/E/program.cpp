@@ -29,15 +29,6 @@ int main() {
     std::vector<point> points;
     std::vector<point> level_points;
 
-    point point_start;
-    point_start.a = 1;
-    point_start.b = 1;
-    point_start.c = 0;
-    point_start.id = -1;
-    point_start.prev = -1;
-    point_start.value = 0;
-    //x_array.insert(std::pair<int, point>(point_start.a, point_start ));
-
     // Read data
     int it = 0;
     if (!scanf("%d %d", &n, &m)) { return 0; }
@@ -54,34 +45,55 @@ int main() {
     for (int i=0; i<k; i++) {
         points[i].id = it++;
     }
+    if (points[0].a != 1 || points[0].b != 1) {
+        point point_start;
+        point_start.a = 1;
+        point_start.b = 1;
+        point_start.c = 0;
+        point_start.id = -1;
+        point_start.prev = -1;
+        point_start.value = 0;
+        x_array.insert(std::pair<int, point>(-1, point_start ));
+    }
 
     int current_y = 1;
     int iter_y = 0;
+
+    long max_val = 0;
+    int max_id = 0;
     
     // Fill first row using cost
     while (iter_y < k && points[iter_y].b == current_y) {
         if (iter_y+1 < k && points[iter_y+1].b == current_y) {
             points[iter_y+1].value = points[iter_y].value + points[iter_y+1].c;
+            points[iter_y+1].prev = points[iter_y].id;
         }
-        x_array.insert(std::pair<int, point>(points[iter_y].a, points[iter_y] ));
+        if (points[iter_y].value > max_val) {
+            max_val = points[iter_y].value;
+            max_id = points[iter_y].id;
+        }
+        x_array[points[iter_y].a] =  points[iter_y];
         iter_y++;
     }
-    long max_val = points[0].c;
-    int max_id = 0;
+
 
     while (iter_y < k) {
         current_y = points[iter_y].b;
+        //printf("POINTS\n");
         while (current_y == points[iter_y].b && iter_y < k) {
+            //printf("%d %d\n", points[iter_y].a, points[iter_y].b);
             level_points.push_back(points[iter_y++]);
             
         }
-        
+        //printf("POINTS\n");
 
         for (int i=0; i<(int)level_points.size(); i++) {
             // Find first smaller or equal element in the array
             auto pointer = x_array.lower_bound(level_points[i].a);
             if (pointer != x_array.begin() && pointer->first != level_points[i].a) pointer--;
-
+            if (pointer == x_array.end()) {
+                pointer--;
+            }
 
             if (i != 0) {
                 if (pointer->second.value > level_points[i-1].value) {
@@ -108,37 +120,39 @@ int main() {
                 max_val = level_points[i].value;
                 max_id = level_points[i].id;
             }
-            x_array.insert(std::pair<int, point>(level_points[i].a, level_points[i]));
+            x_array[level_points[i].a] = level_points[i];
             auto it_elem = x_array.find(level_points[i].a);
             auto it_start = it_elem;
             auto it_helper = it_elem;
             it_helper++;
             int mx = it_elem->second.value;
+
             if (it_elem != x_array.end()) {
                 if (it_helper != x_array.end() && it_helper->second.value < mx) {
                     it_elem++;
                 }
                 
                 while(it_elem != x_array.end() && it_elem->second.value < mx) {
-                    printf("USUWAM\n");
+                    //printf("USUWAM\n");
                     it_elem++;
                 }
                 if (it_elem != it_start) {
-                    x_array.erase ( it_start, it_elem ); 
+                    //printf("DEL -> %d ", it_elem == x_array.end());
+                    x_array.erase ( ++it_start, it_elem ); 
                 }
-                
             }
 
         }
 
         level_points.clear();
-        printf("SIZE: %d\n", (int)x_array.size());
-        for(auto iewt = x_array.begin(); iewt != x_array.end(); ++iewt)
-        {
-            printf("%d %d %d prev(%d) id(%d) val(%ld)\n", iewt->second.a, iewt->second.b, iewt->second.c,  iewt->second.prev, iewt->second.id, iewt->second.value);
-        }
-        int fd;
-        scanf("%d", &fd);
+
+        // printf("BEFORE DEL SIZE: %d\n", (int)x_array.size());
+        // for(auto iewt = x_array.begin(); iewt != x_array.end(); ++iewt)
+        // {
+        //     printf("%d %d %d prev(%d) id(%d) val(%ld)\n", iewt->second.a, iewt->second.b, iewt->second.c,  iewt->second.prev, iewt->second.id, iewt->second.value);
+        // }
+        // int fd;
+        // scanf("%d", &fd);
     }
 
     int iter = max_id;
