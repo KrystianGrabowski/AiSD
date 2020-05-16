@@ -4,10 +4,10 @@ from random import randint
 # parser.add_argument("square", help="display a square of a given number",
 #                     type=int)
 # args = parser.parse_args()
-n = 10
-m = 10
-k = 10
-upperBound = 10
+n = 5
+m = 5
+k = 5
+upperBound = 5
 
 print(f"{m} {n}")
 print(f"{k}")
